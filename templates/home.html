@@ -8,4 +8,15 @@
     </p>
 </div>
 <hr />
+<div class="container">
+    {% if blogs|length == 0 %}
+        <p>No entries yet</p>
+    {% else %}
+        <ul>
+            {% for blog in blogs %}
+            <li><a href="blog/{{blog.id}}"><strong>{{blog.title}}</strong> <small>on {{blog.pub_date}}</small></a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
 {% endblock %}

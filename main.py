@@ -9,7 +9,7 @@ from myhelpers import is_email
 app = Flask(__name__)
 app.secret_key = 'NotSSOOs@cr@t_K&Y!'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://buildablog:BlogPassWord123@localhost:3306/buildablog'
-#app.config['SQLALCHEMY_ECHO'] = True
+app.config['SQLALCHEMY_ECHO'] = True
 
 #init db instance
 db = SQLAlchemy(app)
@@ -23,8 +23,6 @@ class Blog(db.Model):
     body = db.Column(db.Text)
     pub_date = db.Column(db.DateTime, nullable=False,
         default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),
-        nullable=False)
     #init a post
     def __init__(self, title, body):
         self.title = title
@@ -37,17 +35,49 @@ class Blog(db.Model):
 
 #create a blog form
 class BlogForm(Form):
-    title = StringField('Title', [validators.DataRequired() ,validators.Length(min=6, max=120)])
-    body = TextAreaField('Body', [validators.DataRequired(), validators.Length(min=20)])
+    title = StringField('Title', [validators.Length(min=6, max=120)])
+    body = TextAreaField('Body', [validators.Length(min=20)])
 
 
 
+
+
+@app.route('/blog/<int:id>/', methods=['GET', 'POST'])
+def blog(id):
+    blog = Blog.query.get(id)
+    return render_template('blog.html', title='Blog', blog=blog)
+
+
+
+
+@app.route('/newpost', methods=['GET', 'POST'])
+def newpost():
+    form = BlogForm(request.form)
+    if request.method == 'POST':
+        title = request.form['title'] 
+        body = request.form['body']
+        if len(title) < 1:
+            flash('You must add a title!', 'danger')
+            redirect(url_for('newpost'))
+        elif len(body) < 1:
+            flash('You must provide content to the body!', 'danger')
+            redirect(url_for('newpost'))
+        else:
+            blog = Blog(title, body)
+            db.session.add(blog)
+            db.session.commit()
+            last_item = Blog.query.order_by(Blog.id.desc()).first()
+            id = last_item.id
+            return render_template('blog.html', blog=blog)
+    return render_template('newpost.html', title='Add and Entry', form=form)
 
 
 
 @app.route('/')
 def home():
-    return render_template('home.html', title='Home')
+    blog = Blog.query.all()
+    return render_template('home.html', title='Home', blogs=blog)
+
 
 
 
