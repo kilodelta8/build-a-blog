@@ -1,6 +1,6 @@
 #crap I dont want camped in my repo, that you can do (or auto do) yourself....
 v/
-
+.vscode/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

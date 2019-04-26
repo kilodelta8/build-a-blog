@@ -1,4 +1,6 @@
 virtualenv vv
 
 pip install flask
+            pymysql
             flask-sqlalchemy
+            WTForms
