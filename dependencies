@@ -4,3 +4,8 @@ pip install flask
             pymysql
             flask-sqlalchemy
             WTForms
+
+
+https://github.com/LaunchCodeEducation/flicklist-flask/blob/studio9/main.py
+
+https://github.com/bradtraversy/myflaskapp/blob/master/app.py
