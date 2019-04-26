@@ -1,3 +1,4 @@
 virtualenv vv
 
 pip install flask
+            flask-sqlalchemy

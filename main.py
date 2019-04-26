@@ -1,8 +1,20 @@
 from flask import Flask, request, render_template, url_for, flash, redirect
+from flask_sqlalchemy import SQLAlchemy
 import myhelpers
 
+
+#app configuration
 app = Flask(__name__)
 app.secret_key = 'NotSSOOs@cr@t_K&Y!'
+#TODO - need to build the db still yet
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://flicklist:MyNewPass@localhost:3306/flicklist'
+
+
+#init db instance
+#db = SQLAlchemy(app)
+
+
+
 
 
 
