@@ -1,0 +1,1 @@
+#keeping my helper functions out of main.py for a cleaner, more tidy code (winky eye!)
