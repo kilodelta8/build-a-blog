@@ -2,7 +2,6 @@ from flask import Flask, request, render_template, url_for, flash, redirect, ses
 from flask_sqlalchemy import SQLAlchemy
 from wtforms import Form, StringField, PasswordField, TextAreaField, validators
 from datetime import datetime
-from myhelpers import is_email
 
 
 #app configuration
@@ -41,15 +40,15 @@ class BlogForm(Form):
 
 
 
-
+#display a single blog post by ID query
 @app.route('/blog/<int:id>/', methods=['GET', 'POST'])
 def blog(id):
     blog = Blog.query.get(id)
-    return render_template('blog.html', title='Blog', blog=blog)
+    return render_template('blog.html', title=blog.title, blog=blog)
 
 
 
-
+#create a new blog post with error checking
 @app.route('/newpost', methods=['GET', 'POST'])
 def newpost():
     form = BlogForm(request.form)
@@ -72,15 +71,15 @@ def newpost():
     return render_template('newpost.html', title='Add and Entry', form=form)
 
 
-
+#home route displaying all blogs in the db
 @app.route('/')
 def home():
-    blog = Blog.query.all()
+    blog = Blog.query.order_by(Blog.pub_date.desc()).all()
     return render_template('home.html', title='Home', blogs=blog)
 
 
 
 
-
+#Non-prodution
 if __name__ == '__main__':
     app.run(debug=True)
